@@ -1,5 +1,7 @@
 # ABC Hall Reservation System
 
+[![Build](https://github.com/YasithaNV2001/ABC-Hall-Reservation-System/actions/workflows/build.yml/badge.svg)](https://github.com/YasithaNV2001/ABC-Hall-Reservation-System/actions/workflows/build.yml)
+
 A desktop application for managing hall bookings, built with **Java Swing** and **MySQL**.
 
 Built in 2023 as my first-year Object-Oriented Programming module project at the **University of Sri Jayewardenepura (USJP)**, and uploaded to GitHub in 2026.
@@ -62,7 +64,8 @@ Built in 2023 as my first-year Object-Oriented Programming module project at the
 - JDK 19 or newer
 - MySQL 8.0
 - Apache NetBeans (recommended)
-- Libraries: `mysql-connector-j-8.0.33`, `miglayout-4.0`, `TimingFramework-0.55`, `timingframework-1.0`, `timingframework-swing-5.0.0`, `AbsoluteLayout`
+
+Required libraries (MySQL Connector/J, MigLayout, TimingFramework) are included in the `lib/` folder.
 
 ### Setup
 1. Clone the repository:
@@ -74,7 +77,7 @@ Built in 2023 as my first-year Object-Oriented Programming module project at the
    mysql -u root -p < database/schema.sql
    ```
 3. Update the database username and password in `src/com/abc/database/hallDb.java` if yours are different from `root` / `root`.
-4. Open the project in NetBeans, add the libraries above under **Project Properties → Libraries**, and run `MainLoginForm`.
+4. Open the project in NetBeans and run it (main class: `com.abc.view.main.MainLoginForm`).
 
 ### Sample logins
 
