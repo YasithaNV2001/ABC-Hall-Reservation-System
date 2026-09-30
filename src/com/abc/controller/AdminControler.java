@@ -6,6 +6,7 @@ package com.abc.controller;
 
 import com.abc.database.hallDb;
 import com.abc.model.BenquetHalls;
+import com.abc.model.Booking;
 
 import com.abc.model.Customer;
 import com.abc.model.Hall;
@@ -30,97 +31,15 @@ import javax.swing.JOptionPane;
  */
 public class AdminControler extends UserControler implements UserInterface {
 
-    @Override
-    public void addCustomer(Customer customer) {
-    }
+    
 
-    @Override
-    public List<Customer> listCustomer() {
+    
 
-        return null;
-    }
+    
 
-    @Override
-    public void addBooking() {
+    
 
-    }
-
-    @Override
-    public void checkAvailabality() {
-    }
-
-    /*public List<Hall> selectComponentValueHallCap(String Halltype) {
-
-        List<Hall> listHallCap;
-        List<Hall> listHallCapSD = new ArrayList<>();
-        List<Hall> listHallCapBQ = new ArrayList<>();
-        List<Hall> listHallCapLX = new ArrayList<>();
-        Hall hall;
-
-        try {
-
-            Connection con = hallDb.getConnection();
-            String sql = "SELECT *FROM halls WHERE hallType=?";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, Halltype);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-
-                if (Halltype.equals("Standard Hall")) {
-
-                    String hState = rs.getString("hallState");
-                    if(hState == null ? hState != null : !hState.equals("MAINTENANCE")){
-                    hall = new StanderdHalls();
-                    String id = rs.getString("hallCap");
-                    hall.setHallId(id);
-
-                    listHallCapSD.add(hall);
-                    }
-
-                } else if (Halltype.equals("Benquet Hall")) {
-                    
-                    String hState = rs.getString("hallState");
-                    if(hState == null ? hState != null : !hState.equals("MAINTENANCE")){
-                    hall = new BenquetHalls();
-                    String id = rs.getString("hallCap");
-                    hall.setHallId(id);
-                    listHallCapBQ.add(hall);
-                    }
-
-                } else {
-                    
-                    String hState = rs.getString("hallState");
-                    if(hState == null ? hState != null : !hState.equals("MAINTENANCE")){
-                    hall = new LuxuryHalls();
-                    String id = rs.getString("hallCap");
-                    hall.setHallId(id);
-                    listHallCapLX.add(hall);
-                    }
-
-                }
-            }
-
-        } catch (Exception ex) {
-
-            ex.printStackTrace();;
-            JOptionPane.showMessageDialog(null, "Error");
-
-        }
-
-        if (Halltype.equals("Standard Hall")) {
-
-            listHallId = listHallIdSD;
-        } else if (Halltype.equals("Benquet Hall")) {
-
-            listHallId = listHallIdBQ;
-        } else {
-
-            listHallId = listHallIdLX;
-        }
-
-        return listHallId;
-
-    }*/
+    
 
     public void addUser(User user) {
 
@@ -355,7 +274,7 @@ public class AdminControler extends UserControler implements UserInterface {
             ps.setString(1, hall.getHallId());
             ps.setString(2, hall.getHallType());
             ps.setString(3, hall.getAcType());
-            ps.setString(4, hall.getPricePerDay());
+            ps.setString(4, Double.toString(hall.getPricePerDay()));
             ps.setString(5, hall.getHallCap());
             ps.setString(6, hall.getHallState());
             ps.setString(7, hall.getHallInDate());
@@ -383,7 +302,7 @@ public class AdminControler extends UserControler implements UserInterface {
 
             ps.setString(1, hall.getHallType());
             ps.setString(2, hall.getAcType());
-            ps.setString(3, hall.getPricePerDay());
+            ps.setString(3, Double.toString(hall.getPricePerDay()));
             ps.setString(4, hall.getHallCap());
             ps.setString(5, hall.getHallState());
             ps.setString(6, hall.getHallInDate());
@@ -417,7 +336,7 @@ public class AdminControler extends UserControler implements UserInterface {
                     sd.setHallId(rs.getString("hallId"));
                     sd.setHallType("Standard Hall");
                     sd.setAcType(rs.getString("acType"));
-                    sd.setPricePerDay(rs.getString("pricePerDay"));
+                    sd.setPricePerDay(Double.parseDouble(rs.getString("pricePerDay")));
                     sd.setHallCap(rs.getString("hallCap"));
                     sd.setHallNo(rs.getInt("hall_key"));
                     sd.setHallState(rs.getString("hallState"));
@@ -431,7 +350,7 @@ public class AdminControler extends UserControler implements UserInterface {
                     bq.setHallId(rs.getString("hallId"));
                     bq.setHallType("Benquet Hall");
                     bq.setAcType(rs.getString("acType"));
-                    bq.setPricePerDay(rs.getString("pricePerDay"));
+                    bq.setPricePerDay(Double.parseDouble(rs.getString("pricePerDay")));
                     bq.setHallCap(rs.getString("hallCap"));
                     bq.setHallNo(rs.getInt("hall_key"));
                     bq.setHallState(rs.getString("hallState"));
@@ -444,7 +363,7 @@ public class AdminControler extends UserControler implements UserInterface {
                     lx.setHallId(rs.getString("hallId"));
                     lx.setHallType("Luxury Hall");
                     lx.setAcType(rs.getString("acType"));
-                    lx.setPricePerDay(rs.getString("pricePerDay"));
+                    lx.setPricePerDay(Double.parseDouble(rs.getString("pricePerDay")));
                     lx.setHallCap(rs.getString("hallCap"));
                     lx.setHallNo(rs.getInt("hall_key"));
                     lx.setHallState(rs.getString("hallState"));
@@ -466,6 +385,71 @@ public class AdminControler extends UserControler implements UserInterface {
 
     }
 
+    public Hall searchHallForBooking(String HallId) {
+
+        Hall sd = null;
+        try {
+
+            Connection con = hallDb.getConnection();
+            String sql = "SELECT *FROM halls WHERE hallId=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, HallId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+
+                if (rs.getString("hallType").equals("Standard Hall")) {
+                    sd = new StanderdHalls();
+                    sd.setHallNo(rs.getInt("hall_key"));
+                    sd.setHallId(rs.getString("hallId"));
+                    sd.setHallType("Standard Hall");
+                    sd.setAcType(rs.getString("acType"));
+                    sd.setPricePerDay(Double.parseDouble(rs.getString("pricePerDay")));
+                    sd.setHallCap(rs.getString("hallCap"));
+                    sd.setHallState(rs.getString("hallState"));
+                    sd.setHallInDate(rs.getString("inDate"));
+                    sd.setHallOutDate(rs.getString("outDate"));
+
+                } else if (rs.getString("hallType").equals("Benquet Hall")) {
+
+                    sd = new BenquetHalls();
+                    sd.setHallNo(rs.getInt("hall_key"));
+                    sd.setHallId(rs.getString("hallId"));
+                    sd.setHallType("Benquet Hall");
+                    sd.setAcType(rs.getString("acType"));
+                    sd.setPricePerDay(Double.parseDouble(rs.getString("pricePerDay")));
+                    sd.setHallCap(rs.getString("hallCap"));
+                    sd.setHallState(rs.getString("hallState"));
+                    sd.setHallInDate(rs.getString("inDate"));
+                    sd.setHallOutDate(rs.getString("outDate"));
+
+                } else {
+
+                    sd = new LuxuryHalls();
+                    sd.setHallNo(rs.getInt("hall_key"));
+                    sd.setHallId(rs.getString("hallId"));
+                    sd.setHallType("Luxury Hall");
+                    sd.setAcType(rs.getString("acType"));
+                    sd.setPricePerDay(Double.parseDouble(rs.getString("pricePerDay")));
+                    sd.setHallCap(rs.getString("hallCap"));
+                    sd.setHallState(rs.getString("hallState"));
+                    sd.setHallInDate(rs.getString("inDate"));
+                    sd.setHallOutDate(rs.getString("outDate"));
+
+                }
+
+            }
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error");
+
+        }
+
+        return sd;
+
+    }
+    
     public Hall searchHall(String HallId) {
 
         Hall sd = null;
@@ -481,10 +465,11 @@ public class AdminControler extends UserControler implements UserInterface {
 
                 if (rs.getString("hallType").equals("Standard Hall")) {
                     sd = new StanderdHalls();
+                    sd.setHallNo(rs.getInt("hall_key"));
                     sd.setHallId(rs.getString("hallId"));
                     sd.setHallType("Standard Hall");
                     sd.setAcType(rs.getString("acType"));
-                    sd.setPricePerDay(rs.getString("pricePerDay"));
+                    sd.setPricePerDay(Double.parseDouble(rs.getString("pricePerDay")));
                     sd.setHallCap(rs.getString("hallCap"));
                     sd.setHallState(rs.getString("hallState"));
                     sd.setHallInDate(rs.getString("inDate"));
@@ -493,10 +478,11 @@ public class AdminControler extends UserControler implements UserInterface {
                 } else if (rs.getString("hallType").equals("Benquet Hall")) {
 
                     sd = new BenquetHalls();
+                    sd.setHallNo(rs.getInt("hall_key"));
                     sd.setHallId(rs.getString("hallId"));
                     sd.setHallType("Benquet Hall");
                     sd.setAcType(rs.getString("acType"));
-                    sd.setPricePerDay(rs.getString("pricePerDay"));
+                    sd.setPricePerDay(Double.parseDouble(rs.getString("pricePerDay")));
                     sd.setHallCap(rs.getString("hallCap"));
                     sd.setHallState(rs.getString("hallState"));
                     sd.setHallInDate(rs.getString("inDate"));
@@ -505,10 +491,11 @@ public class AdminControler extends UserControler implements UserInterface {
                 } else {
 
                     sd = new LuxuryHalls();
+                    sd.setHallNo(rs.getInt("hall_key"));
                     sd.setHallId(rs.getString("hallId"));
                     sd.setHallType("Luxury Hall");
                     sd.setAcType(rs.getString("acType"));
-                    sd.setPricePerDay(rs.getString("pricePerDay"));
+                    sd.setPricePerDay(Double.parseDouble(rs.getString("pricePerDay")));
                     sd.setHallCap(rs.getString("hallCap"));
                     sd.setHallState(rs.getString("hallState"));
                     sd.setHallInDate(rs.getString("inDate"));
@@ -635,5 +622,9 @@ public class AdminControler extends UserControler implements UserInterface {
         }
 
     }
+
+    
+
+    
 
 }

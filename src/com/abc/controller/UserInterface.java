@@ -4,7 +4,9 @@
  */
 package com.abc.controller;
 
+import com.abc.model.Booking;
 import com.abc.model.Customer;
+import com.abc.model.Hall;
 import java.util.List;
 
 /**
@@ -14,11 +16,9 @@ import java.util.List;
 public interface UserInterface {
     
     
-    public  void addCustomer(Customer customer);
-   
-    public List<Customer> listCustomer();
-    public void addBooking();
-    public void checkAvailabality();
+    
+    public void addBooking(Booking book);
+    public  List<Booking> checkAvailabality(String checkIn,String checkOut,Hall hall);
     
     
     

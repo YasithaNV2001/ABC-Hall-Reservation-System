@@ -10,7 +10,7 @@ package com.abc.model;
  */
 public class LuxuryHalls extends Hall {
 
-    public LuxuryHalls(int hallNo, String hallId, String acType, String pricePerDay, String hallCap, String hallType, String hallState) {
+    public LuxuryHalls(int hallNo, String hallId, String acType, double pricePerDay, String hallCap, String hallType, String hallState) {
         super(hallNo, hallId, acType, pricePerDay, hallCap, hallType, hallState);
     }
 

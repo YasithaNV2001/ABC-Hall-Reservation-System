@@ -35,7 +35,7 @@ public class PanelCover extends javax.swing.JPanel {
     }
 
     private void init() {
-        title = new JLabel("Welcome Back!");
+        title = new JLabel("Hello ");
         title.setFont(new Font("sansserif", 1, 30));
         title.setForeground(new Color(245, 245, 245));
         add(title);
@@ -48,7 +48,7 @@ public class PanelCover extends javax.swing.JPanel {
         button = new ButtonOutLine();
         button.setBackground(new Color(255, 255, 255));
         button.setForeground(new Color(255, 255, 255));
-        button.setText("BOOK NOW");
+        button.setText("Back");
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -127,10 +127,10 @@ public class PanelCover extends javax.swing.JPanel {
                 description1.setText("OUR ELEGENCE HALLS COLLECTION");
                 button.setText("YES");
             } else {
-                title.setText("Welcome Back!");
+                title.setText("Hello!");
                 description.setText("To keep connected with us please");
                 description1.setText("Register with your booking info");
-                button.setText("BOOK NOW");
+                button.setText("Back");
             }
             this.isLogin = login;
         }

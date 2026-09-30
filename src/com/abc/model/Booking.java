@@ -13,21 +13,32 @@ import java.util.Date;
  */
 public class Booking {
     
-    private String bbokingId;
+    private int bookingId;
     private Hall hall;
     private Customer customer;
-    private UserControler user;
-    private Date checkIn;
-    private Date checkOut;
-    private Date specificDay;
+    private User user;
+    private String checkIn;
+    private String checkOut;
+    private String specificDay;
     private int numberOfDay;
+    private String bookingType;
+    private double payment;
 
-    public String getBbokingId() {
-        return bbokingId;
+    public double getPayment() {
+        return payment;
     }
 
-    public void setBbokingId(String bbokingId) {
-        this.bbokingId = bbokingId;
+    public void setPayment(double payment) {
+        this.payment = payment;
+    }
+    
+
+    public int getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(int bookingId) {
+        this.bookingId = bookingId;
     }
 
     public Hall getHall() {
@@ -46,35 +57,35 @@ public class Booking {
         this.customer = customer;
     }
 
-    public UserControler getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserControler user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public Date getCheckIn() {
+    public String getCheckIn() {
         return checkIn;
     }
 
-    public void setCheckIn(Date checkIn) {
+    public void setCheckIn(String checkIn) {
         this.checkIn = checkIn;
     }
 
-    public Date getCheckOut() {
+    public String getCheckOut() {
         return checkOut;
     }
 
-    public void setCheckOut(Date checkOut) {
+    public void setCheckOut(String checkOut) {
         this.checkOut = checkOut;
     }
 
-    public Date getSpecificDay() {
+    public String getSpecificDay() {
         return specificDay;
     }
 
-    public void setSpecificDay(Date specificDay) {
+    public void setSpecificDay(String specificDay) {
         this.specificDay = specificDay;
     }
 
@@ -86,8 +97,16 @@ public class Booking {
         this.numberOfDay = numberOfDay;
     }
 
-    public Booking(String bbokingId, Hall hall, Customer customer, UserControler user, Date checkIn, Date checkOut, Date specificDay, int numberOfDay) {
-        this.bbokingId = bbokingId;
+    public String getBookingType() {
+        return bookingType;
+    }
+
+    public void setBookingType(String bookingType) {
+        this.bookingType = bookingType;
+    }
+
+    public Booking(int bookingId, Hall hall, Customer customer, User user, String checkIn, String checkOut, String specificDay, int numberOfDay, String bookingType, double payment) {
+        this.bookingId = bookingId;
         this.hall = hall;
         this.customer = customer;
         this.user = user;
@@ -95,7 +114,12 @@ public class Booking {
         this.checkOut = checkOut;
         this.specificDay = specificDay;
         this.numberOfDay = numberOfDay;
+        this.bookingType = bookingType;
+        this.payment = payment;
     }
+
+    
+    
 
     public Booking() {
     }

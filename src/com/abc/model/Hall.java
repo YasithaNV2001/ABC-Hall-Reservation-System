@@ -14,7 +14,7 @@ public abstract class Hall {
     private int hallNo;
     private String hallId;
     private String acType;
-    private String pricePerDay;
+    private double pricePerDay;
     private String hallCap;
     private String hallType;
     private String hallState;
@@ -37,11 +37,11 @@ public abstract class Hall {
         this.hallNo = hallNo;
     }
 
-    public String getPricePerDay() {
+    public double getPricePerDay() {
         return pricePerDay;
     }
 
-    public void setPricePerDay(String pricePerDay) {
+    public void setPricePerDay(double pricePerDay) {
         this.pricePerDay = pricePerDay;
     }
 
@@ -96,7 +96,7 @@ public abstract class Hall {
     
     
 
-    public Hall(int hallNo, String hallId, String acType, String pricePerDay, String hallCap, String hallType, String hallState) {
+    public Hall(int hallNo, String hallId, String acType, double pricePerDay, String hallCap, String hallType, String hallState) {
         this.hallNo = hallNo;
         this.hallId = hallId;
         this.acType = acType;

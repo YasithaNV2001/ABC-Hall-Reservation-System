@@ -66,7 +66,7 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
             String halltype = k.getHallType();
             String actype = k.getAcType();
             String hallCap = k.getHallCap();
-            String pricePerDay = k.getPricePerDay();
+            double pricePerDay = k.getPricePerDay();
             int key = k.getHallNo();
             String State=k.getHallState();
             String inDate=k.getHallInDate();
@@ -154,9 +154,9 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
         gradientBG2 = new com.abc.view.componont.GradientBG();
         jLayeredPane2 = new javax.swing.JLayeredPane();
         jLabel2 = new javax.swing.JLabel();
-        btnMaintenanceAdd = new com.abc.view.swing_componont.KButton();
+        btnMaintenanceAdd = new com.abc.view.swing_componont.JButtonExtend1();
         jLabel14 = new javax.swing.JLabel();
-        btnMaintenanceRemove = new com.abc.view.swing_componont.KButton();
+        btnMaintenanceRemove = new com.abc.view.swing_componont.JButtonExtend1();
         checkindate1 = new javax.swing.JLabel();
         checkInCalender1 = new javax.swing.JLayeredPane();
         btnCheckIn1 = new com.abc.view.swing_componont.ButtonOutLine();
@@ -190,7 +190,8 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         HallTable = new javax.swing.JTable();
         txtSearch = new com.abc.view.swing_componont.MyTextField();
-        btnSearch = new com.abc.view.swing_componont.KButton();
+        btnSearch = new com.abc.view.swing_componont.JButtonExtend1();
+        btnCancel = new com.abc.view.swing_componont.ButtonOutLine();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -554,7 +555,7 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
                                 .addGroup(HallDetalisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(checkOutdate2, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnCheckIn4, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap(17, Short.MAX_VALUE))
                             .addGroup(HallDetalisLayout.createSequentialGroup()
                                 .addGap(52, 52, 52)
                                 .addGroup(HallDetalisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -567,7 +568,7 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
                                             .addComponent(btnHallRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(btnHallAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(btnHallUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 17, Short.MAX_VALUE)))
+                                        .addGap(0, 0, Short.MAX_VALUE)))
                                 .addContainerGap())))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HallDetalisLayout.createSequentialGroup()
                         .addComponent(jLabel11)
@@ -668,6 +669,15 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
             }
         });
 
+        btnCancel.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/abc/view/icon/cancel (1).png"))); // NOI18N
+        btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout gradientBG2Layout = new javax.swing.GroupLayout(gradientBG2);
         gradientBG2.setLayout(gradientBG2Layout);
         gradientBG2Layout.setHorizontalGroup(
@@ -675,20 +685,19 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
             .addGroup(gradientBG2Layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addGroup(gradientBG2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 871, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(gradientBG2Layout.createSequentialGroup()
                         .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLayeredPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLayeredPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(gradientBG2Layout.createSequentialGroup()
-                        .addGroup(gradientBG2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(gradientBG2Layout.createSequentialGroup()
-                                .addGap(24, 24, 24)
-                                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 649, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 871, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(29, Short.MAX_VALUE))))
+                        .addGap(24, 24, 24)
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 649, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         gradientBG2Layout.setVerticalGroup(
             gradientBG2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -696,13 +705,13 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(gradientBG2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(gradientBG2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(gradientBG2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(gradientBG2Layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
+                        .addGap(23, 23, 23)
                         .addComponent(jLayeredPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -713,7 +722,9 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(gradientBG2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(gradientBG2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -759,7 +770,7 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
             
             if (ad.serachHallId(hallId)) {
             String hallCap = txtCapacity.getText();
-            String PricePerDay = txtPricePerDay.getText();
+            double PricePerDay = Double.parseDouble(txtPricePerDay.getText());
             String airCon;
 
             if (rbAC.isSelected()) {
@@ -833,9 +844,9 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
         if (validateSubmit()) {
             String hallId = txtHallId.getText();
             AdminControler ad = new AdminControler();
-            
+            Hall h=ad.searchHall(hallId);
                 String hallCap = txtCapacity.getText();
-                String PricePerDay = txtPricePerDay.getText();
+                double PricePerDay = Double.parseDouble(txtPricePerDay.getText());
                 String airCon;
 
                 if (rbAC.isSelected()) {
@@ -848,6 +859,7 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
 
                 if ((String) cmbHallType.getModel().getSelectedItem() == "Standard Hall") {
 
+                    
                     StanderdHalls sd = new StanderdHalls();
                     sd.setHallId(hallId);
                     sd.setAcType(airCon);
@@ -855,7 +867,7 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
                     sd.setHallCap(hallCap);
                     sd.setHallType((String) cmbHallType.getModel().getSelectedItem());
                     sd.setHallInDate("Hall UPDATE "+curentDate());
-
+                    sd.setHallState(h.getHallState());
                     ad.updateHall(sd);
                     DataTable();
 
@@ -872,7 +884,7 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
                     bq.setHallCap(hallCap);
                     bq.setHallType((String) cmbHallType.getModel().getSelectedItem());
                     bq.setHallInDate("Hall UPDATE "+curentDate());
-
+                    bq.setHallState(h.getHallState());
                     ad.updateHall(bq);
                     DataTable();
                     txtHallId.setText("");
@@ -887,7 +899,7 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
                     lx.setHallCap(hallCap);
                     lx.setHallType((String) cmbHallType.getModel().getSelectedItem());
                     lx.setHallInDate("Hall UPDATE "+curentDate());
-
+                    lx.setHallState(h.getHallState());
                     ad.updateHall(lx);
                     DataTable();
                     txtHallId.setText("");
@@ -917,7 +929,7 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
                 txtHallId.setText(h.getHallId());
                 cmbHallType.getModel().setSelectedItem(h.getHallType());
                 txtCapacity.setText(h.getHallCap());
-                txtPricePerDay.setText(h.getPricePerDay());
+                txtPricePerDay.setText(Double.toString(h.getPricePerDay()));
                 if (h.getAcType().equals("AC")) {
                     rbAC.setSelected(true);
                 } else {
@@ -1078,6 +1090,12 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbHallTypeMActionPerformed
 
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+       
+        this.dispose();
+        
+    }//GEN-LAST:event_btnCancelActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1119,15 +1137,16 @@ public class HallSetingsAdmin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLayeredPane HallDetalis;
     private javax.swing.JTable HallTable;
+    private com.abc.view.swing_componont.ButtonOutLine btnCancel;
     private com.abc.view.swing_componont.ButtonOutLine btnCheckIn1;
     private com.abc.view.swing_componont.ButtonOutLine btnCheckIn2;
     private com.abc.view.swing_componont.ButtonOutLine btnCheckIn4;
     private com.abc.view.swing_componont.ButtonOutLine btnHallAdd;
     private com.abc.view.swing_componont.ButtonOutLine btnHallRemove;
     private com.abc.view.swing_componont.ButtonOutLine btnHallUpdate;
-    private com.abc.view.swing_componont.KButton btnMaintenanceAdd;
-    private com.abc.view.swing_componont.KButton btnMaintenanceRemove;
-    private com.abc.view.swing_componont.KButton btnSearch;
+    private com.abc.view.swing_componont.JButtonExtend1 btnMaintenanceAdd;
+    private com.abc.view.swing_componont.JButtonExtend1 btnMaintenanceRemove;
+    private com.abc.view.swing_componont.JButtonExtend1 btnSearch;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLayeredPane checkInCalender1;
     private javax.swing.JLayeredPane checkInCalender2;

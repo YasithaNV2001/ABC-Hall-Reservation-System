@@ -6,6 +6,7 @@ package com.abc.controller;
 
 import com.abc.database.hallDb;
 import com.abc.model.BenquetHalls;
+import com.abc.model.Booking;
 import com.abc.model.Customer;
 import com.abc.model.Hall;
 import com.abc.model.LuxuryHalls;
@@ -24,79 +25,77 @@ import javax.swing.JOptionPane;
  */
 public class CustomerControler implements UserInterface {
 
-    @Override
-    public void addCustomer(Customer customer) {
-        
-        try {
-            Connection con = hallDb.getConnection();
-            String sql = "INSERT INTO customers(customer_nic,cust_name,telephone_number,gmail,user_key,customerCreateDate)VALUES(?,?,?,?,?,?)";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, customer.getCustomerId());
-            ps.setString(2, customer.getName());
-            ps.setString(3, customer.getTelephoneNumber());
-            ps.setString(4, customer.getGmail());
-            ps.setObject(5, customer.getUser());
-            ps.setString(6, customer.getCreateDate());
-
-            ps.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Successfully Submited");
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error while Submiting");
-
-        }
-        
-         }
-
-    @Override
-    public List<Customer> listCustomer(){
-        
-        
-        List<Customer> list = new ArrayList<>();
     
 
+    
+        
+
+    public Hall searchHallForBooking(String HallId) {
+
+        Hall sd = null;
         try {
+
             Connection con = hallDb.getConnection();
-            String sql = "SELECT * FROM customers";
+            String sql = "SELECT *FROM halls WHERE hallId=?";
             PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, HallId);
             ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
+            if (rs.next()) {
 
-                Customer cust = new Customer();
-                cust.setCustomerId(rs.getString("customer_nic"));
-                cust.setName(rs.getString("cust_name"));
-                cust.setTelephoneNumber(rs.getString("telephone_number"));
-                cust.setGmail(rs.getString("gmail"));
-                UserControler ul=new UserControler();
-                cust.setUser(ul.searchUser(rs.getString("user_key")));
-                cust.setCreateDate(rs.getString("customerCreateDate"));
-                cust.setCustNo(rs.getInt("cust_key"));
-                list.add(cust);
+                if (rs.getString("hallType").equals("Standard Hall")) {
+                    sd = new StanderdHalls();
+                    sd.setHallNo(rs.getInt("hall_key"));
+                    sd.setHallId(rs.getString("hallId"));
+                    sd.setHallType("Standard Hall");
+                    sd.setAcType(rs.getString("acType"));
+                    sd.setPricePerDay(Double.parseDouble(rs.getString("pricePerDay")));
+                    sd.setHallCap(rs.getString("hallCap"));
+                    sd.setHallState(rs.getString("hallState"));
+                    sd.setHallInDate(rs.getString("inDate"));
+                    sd.setHallOutDate(rs.getString("outDate"));
 
-                
+                } else if (rs.getString("hallType").equals("Benquet Hall")) {
+
+                    sd = new BenquetHalls();
+                    sd.setHallNo(rs.getInt("hall_key"));
+                    sd.setHallId(rs.getString("hallId"));
+                    sd.setHallType("Benquet Hall");
+                    sd.setAcType(rs.getString("acType"));
+                    sd.setPricePerDay(Double.parseDouble(rs.getString("pricePerDay")));
+                    sd.setHallCap(rs.getString("hallCap"));
+                    sd.setHallState(rs.getString("hallState"));
+                    sd.setHallInDate(rs.getString("inDate"));
+                    sd.setHallOutDate(rs.getString("outDate"));
+
+                } else {
+
+                    sd = new LuxuryHalls();
+                    sd.setHallNo(rs.getInt("hall_key"));
+                    sd.setHallId(rs.getString("hallId"));
+                    sd.setHallType("Luxury Hall");
+                    sd.setAcType(rs.getString("acType"));
+                    sd.setPricePerDay(Double.parseDouble(rs.getString("pricePerDay")));
+                    sd.setHallCap(rs.getString("hallCap"));
+                    sd.setHallState(rs.getString("hallState"));
+                    sd.setHallInDate(rs.getString("inDate"));
+                    sd.setHallOutDate(rs.getString("outDate"));
+
+                }
+
             }
-        }catch (Exception ex) {
-            
-            ex.printStackTrace();;
-        JOptionPane.showMessageDialog(null, "Error");
-            
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error");
+
         }
 
-            return list;
+        return sd;
+
     }
-        
 
-    @Override
-    public void addBooking() {
-        }
-
-    @Override
-    public void checkAvailabality() {
     
-    
-    } 
     
         public List<Hall> selectComponentValueHallID(String Halltype) {
 
@@ -169,6 +168,167 @@ public class CustomerControler implements UserInterface {
 
         return listHallId;
 
+    }
+
+    @Override
+    public void addBooking(Booking book) {
+         
+    try {
+            Connection con = hallDb.getConnection();
+            String sql = "INSERT INTO booking(cust_key,user_key,checkInDate,checkOutDate,numberOfDate,specificDay,booking_Type,hall_key,payment)VALUES(?,?,?,?,?,?,?,?,?)";
+            PreparedStatement ps = con.prepareStatement(sql);
+            
+            ps.setInt(1,book.getCustomer().getCustNo());
+            ps.setInt(2,book.getUser().getId());
+            ps.setString(3,book.getCheckIn());
+            ps.setString(4,book.getCheckOut());
+            ps.setInt(5,book.getNumberOfDay());
+            ps.setString(6, book.getSpecificDay());
+            ps.setString(7,book.getBookingType());
+            ps.setInt(8,book.getHall().getHallNo());
+            ps.setDouble(9, book.getPayment());
+            ps.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Successfully booked");
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error while booking");
+
+        }
+       
+    }
+
+    @Override
+    public  List<Booking> checkAvailabality( String checkIn, String checkOut, Hall hall) {
+        
+    
+        List<Booking> list = new ArrayList<>();
+        UserControler uc=new UserControler();
+        try {
+
+            
+            Connection con = hallDb.getConnection();
+            String sql = "SELECT *FROM booking WHERE hall_key = ? AND ((checkInDate >= ? AND checkOutDate <= ?) OR (checkInDate >= ? AND checkInDate <= ?) OR (checkOutDate >= ? AND checkOutDate <= ?) OR (checkInDate <= ? AND checkOutDate >= ?))";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, hall.getHallNo());
+            ps.setString(2, checkIn);
+            ps.setString(3, checkOut);
+            ps.setString(4, checkIn);
+            ps.setString(5, checkOut);
+            ps.setString(6, checkIn);
+            ps.setString(7, checkOut);
+            ps.setString(8, checkIn);
+            ps.setString(9, checkOut);
+            
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                
+                
+                
+                Booking book = new Booking();
+                book.setBookingId(rs.getInt("booking_key"));
+                book.setBookingType(rs.getString("booking_Type"));
+                book.setCheckIn(rs.getString("checkInDate"));
+                book.setCheckOut(rs.getString("checkOutDate"));
+                book.setSpecificDay(rs.getString("specificDay"));
+                book.setHall(uc.searchHallbyhall_key(rs.getInt("hall_key")));
+                list.add(book);
+                
+            
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error");
+        }
+        return list;
+        
+       
+    }
+    
+    public List<Hall> selectHallbyHallType(String Halltype) {
+
+        List<Hall> listHall;
+        List<Hall> listHallSD = new ArrayList<>();
+        List<Hall> listHallBQ = new ArrayList<>();
+        List<Hall> listHallLX = new ArrayList<>();
+        Hall hall;
+
+        try {
+
+            Connection con = hallDb.getConnection();
+            String sql = "SELECT * FROM halls";
+            PreparedStatement ps = con.prepareStatement(sql);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                if (rs.getString("hallType").equals("Standard Hall")) {
+
+                    String hState = rs.getString("hallState");
+                    if(hState == null ? hState != null : !hState.equals("MAINTENANCE")){
+                    hall = new StanderdHalls();
+                    hall.setHallId(rs.getString("hallId"));
+                    hall.setHallType(rs.getString("hallType"));
+                    hall.setAcType(rs.getString("acType"));
+                    hall.setPricePerDay(Double.parseDouble(rs.getString("pricePerDay")));
+                    hall.setHallCap(rs.getString("hallCap"));
+                    
+
+                    listHallSD.add(hall);
+                    }
+
+                } else if (rs.getString("hallType").equals("Benquet Hall")) {
+                    
+                    String hState = rs.getString("hallState");
+                    if(hState == null ? hState != null : !hState.equals("MAINTENANCE")){
+                    hall = new BenquetHalls();
+                    hall.setHallId(rs.getString("hallId"));
+                    hall.setHallType(rs.getString("hallType"));
+                    hall.setAcType(rs.getString("acType"));
+                    hall.setPricePerDay(Double.parseDouble(rs.getString("pricePerDay")));
+                    hall.setHallCap(rs.getString("hallCap"));;
+                    listHallBQ.add(hall);
+                    }
+
+                } else {
+                    
+                    String hState = rs.getString("hallState");
+                    if(hState == null ? hState != null : !hState.equals("MAINTENANCE")){
+                    hall = new LuxuryHalls();
+                    hall.setHallId(rs.getString("hallId"));
+                    hall.setHallType(rs.getString("hallType"));
+                    hall.setAcType(rs.getString("acType"));
+                    hall.setPricePerDay(Double.parseDouble(rs.getString("pricePerDay")));
+                    hall.setHallCap(rs.getString("hallCap"));
+                    listHallLX.add(hall);
+                    }
+
+                }
+            }
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();;
+            JOptionPane.showMessageDialog(null, "Error");
+
+        }
+
+        if (Halltype.equals("Standard Hall")) {
+
+            listHall = listHallSD;
+        } else if (Halltype.equals("Benquet Hall")) {
+
+            listHall = listHallBQ;
+        } else {
+
+            listHall = listHallLX;
+        }
+
+        return listHall;
+
+    
     }
 
    

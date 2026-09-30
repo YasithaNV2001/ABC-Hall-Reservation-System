@@ -26,7 +26,7 @@ import javax.swing.JButton;
  * @auauthor KeepToo
  * This class extends JButton and with added features to it
  */
-public class KButton extends JButton {
+public class JButtonExtend1 extends JButton {
 
     public Color kBackGroundColor = Color.magenta;
     public Color kStartColor = new Color(0, 153, 153);
@@ -179,7 +179,7 @@ public class KButton extends JButton {
         this.kFillButton = kFillButton;
     }
 
-    public KButton() {
+    public JButtonExtend1() {
 
         this.setPreferredSize(new Dimension(185, 45));
         this.setForeground(Color.white);
@@ -231,10 +231,10 @@ public class KButton extends JButton {
             if (iskAllowTab()) {
                 Component[] comp = getParent().getComponents();
                 for (int i = 0; i < comp.length; i++) {
-                    if (comp[i] instanceof KButton) {
+                    if (comp[i] instanceof JButtonExtend1) {
 
-                        ((KButton) comp[i]).setSelected(false);
-                        ((KButton) comp[i]).setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, kIndicatorColor));
+                        ((JButtonExtend1) comp[i]).setSelected(false);
+                        ((JButtonExtend1) comp[i]).setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, kIndicatorColor));
                     }
                 }
                 this.setBorder(BorderFactory.createMatteBorder(0, kIndicatorThickness, 0, 0, kIndicatorColor));

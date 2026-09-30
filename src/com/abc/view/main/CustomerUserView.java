@@ -4,10 +4,23 @@
  */
 package com.abc.view.main;
 
+import com.abc.controller.AdminControler;
+import com.abc.controller.CustomerControler;
+import com.abc.controller.UserControler;
+import com.abc.model.Booking;
+import com.abc.model.Customer;
+import com.abc.model.Hall;
+import com.abc.model.Login;
+import com.abc.model.User;
 import com.abc.view.componont.DatePicker;
 import com.abc.view.swing_componont.ButtonOutLine;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.regex.Pattern;
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,20 +31,108 @@ public class CustomerUserView extends javax.swing.JFrame {
     /**
      * Creates new form CustomerUserIView
      */
-    
-  
+    private JCheckBox[] checkboxes;
+    private int selectedDays;
+
     public CustomerUserView() {
         initComponents();
         showDate();
+        DataTableHall();
+
+        checkboxes = new JCheckBox[7];
+        selectedDays = 0;
+
+        checkboxes[0] = cbSunday;
+        checkboxes[1] = cbMonday;
+        checkboxes[2] = cbTuesday;
+        checkboxes[3] = cbWednesday;
+        checkboxes[4] = cbThursday;
+        checkboxes[5] = cbFriday;
+        checkboxes[6] = cbSaterday;
     }
-    
-    public void showDate(){
-    
-    SimpleDateFormat sdf=new SimpleDateFormat("dd|MM|yyyy");
-    Date d= new Date();
-    txtCheckInDate.setText(sdf.format(d));
-    txtCheckOutDate.setText(sdf.format(d));
-    
+
+    String checkIndateAM;
+    String checkOutdateAM;
+
+    public void showDate() {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date d = new Date();
+        txtCheckInDate.setText(sdf.format(d));
+        txtCheckOutDate.setText(sdf.format(d));
+
+    }
+
+    private int updateSelectedDays() {
+        selectedDays = 0;
+        for (int i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].isSelected()) {
+
+                selectedDays += (int) Math.pow(2, i);
+            }
+        }
+        return selectedDays;
+    }
+
+    public boolean validateSubmit() {
+
+        boolean b = false;
+        if (txtNicCust.getText().equals("")) {
+
+            b = false;
+            JOptionPane.showMessageDialog(null, "Customer NIC is requried");
+            txtNicCust.requestFocus();
+        } else if (txtNameCust.getText().equals("")) {
+
+            b = false;
+            JOptionPane.showMessageDialog(null, "Customer Name is requried");
+            txtNameCust.requestFocus();
+
+        } else if (txtTeleCust.getText().equals("")) {
+
+            b = false;
+            JOptionPane.showMessageDialog(null, "Customer Telephone Number is requried");
+            txtTeleCust.requestFocus();
+
+        } else if (txtEmailCust.getText().equals("")) {
+
+            b = false;
+            JOptionPane.showMessageDialog(null, "Customer Email is requried");
+            txtEmailCust.requestFocus();
+
+        } else if (!(Pattern.matches(EMAIL_PATTERN, txtEmailCust.getText()))) {
+
+            JOptionPane.showMessageDialog(null, "Email is invalid ");
+
+        } else {
+
+            b = true;
+        }
+
+        return b;
+
+    }
+
+    private static final String EMAIL_PATTERN
+            = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+    public void DataTableHall() {
+
+        UserControler Cc = new UserControler();
+        List<Hall> list = Cc.listHallTable();
+        DefaultTableModel DFT = (DefaultTableModel) halltableCustomer.getModel();
+        DFT.setRowCount(0);
+        for (Hall k : list) {
+
+            String htype = k.getHallType();
+            String id = k.getHallId();
+            String hallCap = k.getHallCap();
+            double pricePerDay = k.getPricePerDay();
+            String actype = k.getAcType();
+            DFT.addRow(new Object[]{htype, id, hallCap, pricePerDay, actype});
+
+        }
     }
 
     /**
@@ -45,17 +146,6 @@ public class CustomerUserView extends javax.swing.JFrame {
 
         gradientBG2 = new com.abc.view.componont.GradientBG();
         jLayeredPane1 = new javax.swing.JLayeredPane();
-        HallType = new javax.swing.JLayeredPane();
-        jLabel7 = new javax.swing.JLabel();
-        cmbHallID = new javax.swing.JComboBox<>();
-        rbNonAC = new javax.swing.JRadioButton();
-        rbAC = new javax.swing.JRadioButton();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        btnCheckIn4 = new com.abc.view.swing_componont.ButtonOutLine();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
         jCalanderPane = new javax.swing.JLayeredPane();
         checkInCalender = new javax.swing.JLayeredPane();
         txtCheckInDate = new javax.swing.JLabel();
@@ -66,135 +156,47 @@ public class CustomerUserView extends javax.swing.JFrame {
         btnCheckOut = new com.abc.view.swing_componont.ButtonOutLine();
         checkOutdate = new javax.swing.JLabel();
         jLayeredPane2 = new javax.swing.JLayeredPane();
-        jTextField1 = new javax.swing.JTextField();
+        txtNicCust = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtNameCust = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtTeleCust = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        kButton1 = new com.abc.view.swing_componont.KButton();
-        kButton2 = new com.abc.view.swing_componont.KButton();
+        txtEmailCust = new javax.swing.JTextField();
+        btnSubmitBooking = new com.abc.view.swing_componont.JButtonExtend1();
+        HallType = new javax.swing.JLayeredPane();
+        lbHalltype = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        btnSelectLuxuryHall = new com.abc.view.swing_componont.ButtonOutLine();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        txtHallId = new javax.swing.JTextField();
+        txtCap = new javax.swing.JTextField();
+        txtPrice = new javax.swing.JTextField();
+        txtAc = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        cmbBookTypeCust = new javax.swing.JComboBox<>();
+        cbSunday = new javax.swing.JCheckBox();
+        cbMonday = new javax.swing.JCheckBox();
+        cbTuesday = new javax.swing.JCheckBox();
+        cbWednesday = new javax.swing.JCheckBox();
+        cbThursday = new javax.swing.JCheckBox();
+        cbFriday = new javax.swing.JCheckBox();
+        cbSaterday = new javax.swing.JCheckBox();
+        cmbNumberOfDay = new javax.swing.JComboBox<>();
+        checkindate1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        halltableCustomer = new javax.swing.JTable();
+        cmbHtype = new javax.swing.JComboBox<>();
+        btnBack = new com.abc.view.swing_componont.JButtonExtend1();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-
-        HallType.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 255, 255)));
-
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Banquet Halls");
-
-        cmbHallID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbHallID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbHallIDActionPerformed(evt);
-            }
-        });
-
-        rbNonAC.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        rbNonAC.setText("NON A/C");
-
-        rbAC.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        rbAC.setText("A/C");
-        rbAC.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbACActionPerformed(evt);
-            }
-        });
-
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Maximum Capacity- 1000");
-
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        jLabel9.setText("Price Per Day -75 000/-");
-
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        jLabel10.setText("Terms and Conditions apply.");
-
-        btnCheckIn4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/abc/view/icon/building (6).png"))); // NOI18N
-        btnCheckIn4.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
-        btnCheckIn4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCheckIn4ActionPerformed(evt);
-            }
-        });
-
-        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 8)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel12.setText(" (Per Person)");
-
-        HallType.setLayer(jLabel7, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        HallType.setLayer(cmbHallID, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        HallType.setLayer(rbNonAC, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        HallType.setLayer(rbAC, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        HallType.setLayer(jLabel8, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        HallType.setLayer(jLabel9, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        HallType.setLayer(jLabel10, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        HallType.setLayer(btnCheckIn4, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        HallType.setLayer(jLabel11, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        HallType.setLayer(jLabel12, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        javax.swing.GroupLayout HallTypeLayout = new javax.swing.GroupLayout(HallType);
-        HallType.setLayout(HallTypeLayout);
-        HallTypeLayout.setHorizontalGroup(
-            HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(HallTypeLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(HallTypeLayout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addGap(334, 334, 334))
-                    .addGroup(HallTypeLayout.createSequentialGroup()
-                        .addGroup(HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8)
-                            .addComponent(cmbHallID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(HallTypeLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(rbAC, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(rbNonAC)
-                                .addGap(177, 177, 177))
-                            .addGroup(HallTypeLayout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(btnCheckIn4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(HallTypeLayout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addGap(0, 0, Short.MAX_VALUE))))
-        );
-        HallTypeLayout.setVerticalGroup(
-            HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(HallTypeLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(HallTypeLayout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbHallID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnCheckIn4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(rbAC)
-                    .addComponent(rbNonAC))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel10)
-                .addGap(249, 249, 249)
-                .addComponent(jLabel11)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
 
         checkInCalender.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 255, 255)));
 
@@ -322,21 +324,21 @@ public class CustomerUserView extends javax.swing.JFrame {
                 .addGroup(jCalanderPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(checkInCalender, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(checkOutCalender, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLayeredPane2.setBackground(new java.awt.Color(255, 255, 255));
         jLayeredPane2.setOpaque(true);
 
-        jTextField1.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(0, 73, 227));
-        jTextField1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 73, 227)));
-        jTextField1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jTextField1.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtNicCust.setBackground(new java.awt.Color(255, 255, 255));
+        txtNicCust.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtNicCust.setForeground(new java.awt.Color(0, 73, 227));
+        txtNicCust.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 73, 227)));
+        txtNicCust.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txtNicCust.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtNicCust.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtNicCustActionPerformed(evt);
             }
         });
 
@@ -353,15 +355,15 @@ public class CustomerUserView extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(0, 73, 227));
         jLabel3.setText("Name");
 
-        jTextField2.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(0, 73, 227));
-        jTextField2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 73, 227)));
-        jTextField2.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jTextField2.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        txtNameCust.setBackground(new java.awt.Color(255, 255, 255));
+        txtNameCust.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtNameCust.setForeground(new java.awt.Color(0, 73, 227));
+        txtNameCust.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 73, 227)));
+        txtNameCust.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txtNameCust.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtNameCust.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                txtNameCustActionPerformed(evt);
             }
         });
 
@@ -369,15 +371,15 @@ public class CustomerUserView extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(0, 73, 227));
         jLabel4.setText("Telephone Number");
 
-        jTextField3.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField3.setForeground(new java.awt.Color(0, 73, 227));
-        jTextField3.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 73, 227)));
-        jTextField3.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jTextField3.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        txtTeleCust.setBackground(new java.awt.Color(255, 255, 255));
+        txtTeleCust.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtTeleCust.setForeground(new java.awt.Color(0, 73, 227));
+        txtTeleCust.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 73, 227)));
+        txtTeleCust.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txtTeleCust.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtTeleCust.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                txtTeleCustActionPerformed(evt);
             }
         });
 
@@ -385,34 +387,39 @@ public class CustomerUserView extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(0, 73, 227));
         jLabel5.setText("E-Mail");
 
-        jTextField4.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField4.setForeground(new java.awt.Color(0, 73, 227));
-        jTextField4.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 73, 227)));
-        jTextField4.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jTextField4.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        txtEmailCust.setBackground(new java.awt.Color(255, 255, 255));
+        txtEmailCust.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtEmailCust.setForeground(new java.awt.Color(0, 73, 227));
+        txtEmailCust.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 73, 227)));
+        txtEmailCust.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txtEmailCust.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtEmailCust.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                txtEmailCustActionPerformed(evt);
             }
         });
 
-        kButton1.setText("Submit");
-        kButton1.setkBackGroundColor(new java.awt.Color(15, 7, 137));
-        kButton1.setkBorderRadius(45);
-        kButton1.setkHoverStartColor(new java.awt.Color(15, 7, 137));
-        kButton1.setkSelectedColor(new java.awt.Color(15, 7, 137));
+        btnSubmitBooking.setText("Submit Booking");
+        btnSubmitBooking.setkBackGroundColor(new java.awt.Color(15, 7, 137));
+        btnSubmitBooking.setkBorderRadius(45);
+        btnSubmitBooking.setkHoverStartColor(new java.awt.Color(15, 7, 137));
+        btnSubmitBooking.setkSelectedColor(new java.awt.Color(15, 7, 137));
+        btnSubmitBooking.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubmitBookingActionPerformed(evt);
+            }
+        });
 
-        jLayeredPane2.setLayer(jTextField1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(txtNicCust, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane2.setLayer(jTextField2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(txtNameCust, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane2.setLayer(jTextField3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(txtTeleCust, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane2.setLayer(jLabel5, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane2.setLayer(jTextField4, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane2.setLayer(kButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(txtEmailCust, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(btnSubmitBooking, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane2Layout = new javax.swing.GroupLayout(jLayeredPane2);
         jLayeredPane2.setLayout(jLayeredPane2Layout);
@@ -422,22 +429,22 @@ public class CustomerUserView extends javax.swing.JFrame {
                 .addContainerGap(41, Short.MAX_VALUE)
                 .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane2Layout.createSequentialGroup()
-                        .addComponent(kButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(113, 113, 113))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane2Layout.createSequentialGroup()
                         .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtEmailCust, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTeleCust, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNameCust, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNicCust, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(46, 46, 46))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addGap(36, 36, 36))))
+                        .addGap(36, 36, 36))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane2Layout.createSequentialGroup()
+                        .addComponent(btnSubmitBooking, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(101, 101, 101))))
         );
         jLayeredPane2Layout.setVerticalGroup(
             jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -447,37 +454,244 @@ public class CustomerUserView extends javax.swing.JFrame {
                 .addGap(35, 35, 35)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtNicCust, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtNameCust, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTeleCust, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
-                .addComponent(kButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtEmailCust, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addComponent(btnSubmitBooking, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31))
         );
 
-        kButton2.setText("Back");
-        kButton2.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        kButton2.setkBorderRadius(65);
-        kButton2.addActionListener(new java.awt.event.ActionListener() {
+        HallType.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 255, 255)));
+
+        lbHalltype.setBackground(new java.awt.Color(255, 255, 255));
+        lbHalltype.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lbHalltype.setForeground(new java.awt.Color(255, 255, 255));
+        lbHalltype.setText("Halls");
+
+        jLabel20.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel20.setText("Maximum Capacity");
+
+        jLabel24.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 8)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel24.setText(" (Per Person)");
+
+        btnSelectLuxuryHall.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/abc/view/icon/building (4).png"))); // NOI18N
+        btnSelectLuxuryHall.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
+        btnSelectLuxuryHall.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                kButton2ActionPerformed(evt);
+                btnSelectLuxuryHallActionPerformed(evt);
             }
         });
 
-        jLayeredPane1.setLayer(HallType, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLabel22.setBackground(new java.awt.Color(204, 204, 204));
+        jLabel22.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel22.setText("Terms and Conditions apply.");
+
+        jLabel21.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel21.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel21.setText("Price Per Day ");
+
+        jLabel27.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel27.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel27.setText("Hall ID");
+
+        jLabel28.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel28.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel28.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel28.setText("Air Condithion");
+
+        HallType.setLayer(lbHalltype, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        HallType.setLayer(jLabel20, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        HallType.setLayer(jLabel23, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        HallType.setLayer(jLabel24, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        HallType.setLayer(btnSelectLuxuryHall, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        HallType.setLayer(jLabel22, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        HallType.setLayer(jLabel21, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        HallType.setLayer(txtHallId, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        HallType.setLayer(txtCap, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        HallType.setLayer(txtPrice, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        HallType.setLayer(txtAc, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        HallType.setLayer(jLabel27, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        HallType.setLayer(jLabel28, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout HallTypeLayout = new javax.swing.GroupLayout(HallType);
+        HallType.setLayout(HallTypeLayout);
+        HallTypeLayout.setHorizontalGroup(
+            HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HallTypeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(HallTypeLayout.createSequentialGroup()
+                        .addComponent(jLabel23)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(HallTypeLayout.createSequentialGroup()
+                        .addGroup(HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(HallTypeLayout.createSequentialGroup()
+                                .addGroup(HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HallTypeLayout.createSequentialGroup()
+                                        .addGroup(HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                    .addGroup(HallTypeLayout.createSequentialGroup()
+                                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(39, 39, 39)))
+                                .addGroup(HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtHallId, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel22)
+                            .addComponent(lbHalltype, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(HallTypeLayout.createSequentialGroup()
+                                .addComponent(jLabel20)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtCap, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnSelectLuxuryHall, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HallTypeLayout.createSequentialGroup()
+                                .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtAc, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
+        );
+        HallTypeLayout.setVerticalGroup(
+            HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HallTypeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSelectLuxuryHall, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(HallTypeLayout.createSequentialGroup()
+                            .addComponent(lbHalltype, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(HallTypeLayout.createSequentialGroup()
+                                    .addGroup(HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtCap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(22, 22, 22))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HallTypeLayout.createSequentialGroup()
+                                    .addComponent(jLabel24)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                            .addGroup(HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel27)
+                                .addComponent(txtHallId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(0, 0, 0)
+                            .addGroup(HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel21)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HallTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtAc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel28))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel22)
+                .addGap(313, 313, 313)
+                .addComponent(jLabel23)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        cmbBookTypeCust.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A Given Date", "A Continues Period", "A Specific Day" }));
+        cmbBookTypeCust.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbBookTypeCustActionPerformed(evt);
+            }
+        });
+
+        cbSunday.setText("Sunday");
+
+        cbMonday.setText("Monday");
+
+        cbTuesday.setText("Tuesday");
+
+        cbWednesday.setText("Wednesday");
+
+        cbThursday.setText("Thursday");
+
+        cbFriday.setText("Friday");
+        cbFriday.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbFridayActionPerformed(evt);
+            }
+        });
+
+        cbSaterday.setText("Saterday");
+
+        cmbNumberOfDay.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" }));
+
+        checkindate1.setBackground(new java.awt.Color(204, 204, 204));
+        checkindate1.setText("Number Of Days");
+
+        halltableCustomer.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Hall Type", "Hall ID", "Hall Cap", "Price Per Day", "AC type"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        halltableCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                halltableCustomerMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(halltableCustomer);
+
+        cmbHtype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Standard Hall", "Benquet Hall", "Luxury Hall" }));
+        cmbHtype.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbHtypeActionPerformed(evt);
+            }
+        });
+
+        btnBack.setText("Back");
+        btnBack.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        btnBack.setkBorderRadius(65);
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
         jLayeredPane1.setLayer(jCalanderPane, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(jLayeredPane2, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jLayeredPane1.setLayer(kButton2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(HallType, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(cmbBookTypeCust, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(cbSunday, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(cbMonday, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(cbTuesday, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(cbWednesday, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(cbThursday, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(cbFriday, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(cbSaterday, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(cmbNumberOfDay, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(checkindate1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(jScrollPane2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(cmbHtype, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(btnBack, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
@@ -486,47 +700,96 @@ public class CustomerUserView extends javax.swing.JFrame {
             .addGroup(jLayeredPane1Layout.createSequentialGroup()
                 .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                        .addComponent(HallType)
+                        .addGap(67, 67, 67))
+                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
                         .addContainerGap()
+                        .addComponent(cmbBookTypeCust, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(checkindate1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmbNumberOfDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52))
+                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jCalanderPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(HallType, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(kButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                                        .addComponent(cbSunday, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cbTuesday, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cbWednesday, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(cbThursday, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                                        .addComponent(cbMonday, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cbFriday, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cbSaterday, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(cmbHtype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jLayeredPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
-                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLayeredPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                        .addComponent(HallType, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jCalanderPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(kButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addComponent(jLayeredPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(86, 86, 86))
+            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                .addComponent(HallType, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCalanderPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmbBookTypeCust, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cmbNumberOfDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(checkindate1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbSunday)
+                    .addComponent(cbTuesday)
+                    .addComponent(cbWednesday)
+                    .addComponent(cbThursday))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbMonday)
+                    .addComponent(cbFriday)
+                    .addComponent(cbSaterday))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmbHtype, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout gradientBG2Layout = new javax.swing.GroupLayout(gradientBG2);
         gradientBG2.setLayout(gradientBG2Layout);
         gradientBG2Layout.setHorizontalGroup(
             gradientBG2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradientBG2Layout.createSequentialGroup()
-                .addGap(79, 79, 79)
+            .addGroup(gradientBG2Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
                 .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         gradientBG2Layout.setVerticalGroup(
             gradientBG2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(gradientBG2Layout.createSequentialGroup()
-                .addContainerGap(37, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(185, 185, 185))
+                .addGap(24, 24, 24))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -537,58 +800,228 @@ public class CustomerUserView extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(gradientBG2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(gradientBG2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtNicCustActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNicCustActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtNicCustActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void txtNameCustActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameCustActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_txtNameCustActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void txtTeleCustActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTeleCustActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_txtTeleCustActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void txtEmailCustActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailCustActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_txtEmailCustActionPerformed
 
-    private void kButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_kButton2ActionPerformed
-
-    private void cmbHallIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbHallIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbHallIDActionPerformed
-
-    private void rbACActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbACActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbACActionPerformed
-
-    private void btnCheckIn4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckIn4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCheckIn4ActionPerformed
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        this.setVisible(false);
+        MainLoginForm f = new MainLoginForm();
+        f.setVisible(true);
+    }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnCheckInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckInActionPerformed
 
-        DatePicker checkIn =new DatePicker(this);
+        DatePicker checkIn = new DatePicker(this);
         txtCheckInDate.setText(checkIn.setPickedDate());
-        
+
     }//GEN-LAST:event_btnCheckInActionPerformed
 
     private void btnCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckOutActionPerformed
-        DatePicker checkIn =new DatePicker(this);
+        DatePicker checkIn = new DatePicker(this);
         txtCheckOutDate.setText(checkIn.setPickedDate());
     }//GEN-LAST:event_btnCheckOutActionPerformed
+
+    private void btnSelectLuxuryHallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectLuxuryHallActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSelectLuxuryHallActionPerformed
+
+    private void cmbHtypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbHtypeActionPerformed
+
+        String value = cmbHtype.getModel().getSelectedItem().toString();
+
+        DataTableHallbyHallType(value);
+    }//GEN-LAST:event_cmbHtypeActionPerformed
+    public void DataTableHallbyHallType(String hType) {
+
+        UserControler Cc = new UserControler();
+        List<Hall> list = Cc.selectHallbyHallType(hType);
+        DefaultTableModel DFT = (DefaultTableModel) halltableCustomer.getModel();
+        DFT.setRowCount(0);
+        for (Hall k : list) {
+
+            String htype = k.getHallType();
+            String id = k.getHallId();
+            String hallCap = k.getHallCap();
+            double pricePerDay = k.getPricePerDay();
+            String actype = k.getAcType();
+            DFT.addRow(new Object[]{htype, id, hallCap, pricePerDay, actype});
+
+        }
+    }
+    private void halltableCustomerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_halltableCustomerMouseClicked
+
+        int row = halltableCustomer.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) halltableCustomer.getModel();
+
+        lbHalltype.setText(model.getValueAt(row, 0).toString());
+        txtHallId.setText(model.getValueAt(row, 1).toString());
+        txtCap.setText(model.getValueAt(row, 2).toString());
+        txtPrice.setText(model.getValueAt(row, 3).toString());
+        txtAc.setText(model.getValueAt(row, 4).toString());
+
+    }//GEN-LAST:event_halltableCustomerMouseClicked
+
+    private void cmbBookTypeCustActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbBookTypeCustActionPerformed
+
+
+    }//GEN-LAST:event_cmbBookTypeCustActionPerformed
+
+    private void cbFridayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFridayActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbFridayActionPerformed
+
+    private void btnSubmitBookingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitBookingActionPerformed
+
+        if (checkIndateAM == null && checkOutdateAM == null) {
+
+            JOptionPane.showMessageDialog(null, "Check in date or Check Out date empty");
+
+        } else {
+            if (validateSubmit()) {
+                String id = txtHallId.getText();
+                String custNic = txtNicCust.getText();
+                String bookingType = cmbBookTypeCust.getModel().getSelectedItem().toString();
+
+                UserControler uc = new UserControler();
+                AdminControler ac = new AdminControler();
+
+                if (id == null || custNic == null) {
+
+                    JOptionPane.showMessageDialog(null, "Hall Id or Customer Nic is empty,please enter");
+
+                } else {
+
+                    if (cmbBookTypeCust.getModel().getSelectedItem().toString().equals("A Specific Day")) {
+
+                        String binaryString = Integer.toBinaryString(updateSelectedDays());
+
+                        int numberOfDays = Integer.parseInt(cmbNumberOfDay.getModel().getSelectedItem().toString());
+
+                        Customer cust = uc.serachCustomerObjbyNic(custNic);
+                        Hall hall = ac.searchHallForBooking(id);
+                        User user = uc.searchUserObjForBooking(Login.getLoginInstance().getUser().getUserId());
+                        Booking book = new Booking();
+
+                        book.setHall(hall);
+                        book.setCustomer(cust);
+                        book.setUser(user);
+                        book.setCheckIn(checkIndateAM);
+                        book.setCheckOut(checkOutdateAM);
+                        book.setSpecificDay(binaryString);
+                        book.setBookingType(bookingType);
+                        book.setNumberOfDay(numberOfDays);
+
+                        PaymentForm pf = new PaymentForm();
+                        double amount = pf.calcPayment(numberOfDays, hall.getPricePerDay());
+                        pf.paymentBill(book, amount);
+                        pf.addBookingafterPayment(book);
+                        this.setVisible(false);
+                        pf.setVisible(true);
+
+                        txtNameCust.setText("");
+                        txtNicCust.setText("");
+                        txtTeleCust.setText("");
+                        txtEmailCust.setText("");
+
+                    } else if (cmbBookTypeCust.getModel().getSelectedItem().toString().equals("A Given Date")) {
+
+                        if (cmbNumberOfDay.getModel().getSelectedItem().toString().equals("1")) {
+
+                            String binaryString = Integer.toBinaryString(updateSelectedDays());
+
+                            int numberOfDays = Integer.parseInt(cmbNumberOfDay.getModel().getSelectedItem().toString());
+
+                            Customer cust = uc.serachCustomerObjbyNic(custNic);
+
+                            Hall hall = ac.searchHallForBooking(id);
+                            User user = uc.searchUserObjForBooking(Login.getLoginInstance().getUser().getUserId());
+                            Booking book = new Booking();
+
+                            if (checkIndateAM.equals(checkOutdateAM)) {
+                                book.setHall(hall);
+                                book.setCustomer(cust);
+                                book.setUser(user);
+                                book.setCheckIn(checkIndateAM);
+                                book.setCheckOut(checkOutdateAM);
+                                book.setSpecificDay(binaryString);
+                                book.setBookingType(bookingType);
+                                book.setNumberOfDay(numberOfDays);
+
+                                PaymentForm pf = new PaymentForm();
+                                double amount = pf.calcPayment(numberOfDays, hall.getPricePerDay());
+                                pf.paymentBill(book, amount);
+                                pf.addBookingafterPayment(book);
+                                this.setVisible(false);
+                                pf.setVisible(true);
+
+                                txtNameCust.setText("");
+                                txtNicCust.setText("");
+                                txtTeleCust.setText("");
+                                txtEmailCust.setText("");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Check in date and Check out date must be same day");
+                            }
+
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Number of Days must be 1");
+                        }
+
+                    } else {
+
+                        String binaryString = Integer.toBinaryString(updateSelectedDays());
+                        int numberOfDays = Integer.parseInt(cmbNumberOfDay.getModel().getSelectedItem().toString());
+
+                        Customer cust = uc.serachCustomerObjbyNic(custNic);
+                        Hall hall = ac.searchHallForBooking(id);
+                        User user = uc.searchUserObjForBooking(Login.getLoginInstance().getUser().getUserId());
+                        Booking book = new Booking();
+
+                        book.setHall(hall);
+                        book.setCustomer(cust);
+                        book.setUser(user);
+                        book.setCheckIn(checkIndateAM);
+                        book.setCheckOut(checkOutdateAM);
+                        book.setSpecificDay(binaryString);
+                        book.setBookingType(bookingType);
+                        book.setNumberOfDay(numberOfDays);
+
+                        PaymentForm pf = new PaymentForm();
+                        double amount = pf.calcPayment(numberOfDays, hall.getPricePerDay());
+                        pf.paymentBill(book, amount);
+                        pf.addBookingafterPayment(book);
+                        this.setVisible(false);
+                        pf.setVisible(true);
+                        txtNameCust.setText("");
+                        txtNicCust.setText("");
+                        txtTeleCust.setText("");
+                        txtEmailCust.setText("");
+                    }
+                }
+
+            }
+        }
+
+    }//GEN-LAST:event_btnSubmitBookingActionPerformed
 
     /**
      * @param args the command line arguments
@@ -628,38 +1061,54 @@ public class CustomerUserView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLayeredPane HallType;
+    private com.abc.view.swing_componont.JButtonExtend1 btnBack;
     private com.abc.view.swing_componont.ButtonOutLine btnCheckIn;
-    private com.abc.view.swing_componont.ButtonOutLine btnCheckIn4;
     private com.abc.view.swing_componont.ButtonOutLine btnCheckOut;
+    private com.abc.view.swing_componont.ButtonOutLine btnSelectLuxuryHall;
+    private com.abc.view.swing_componont.JButtonExtend1 btnSubmitBooking;
+    private javax.swing.JCheckBox cbFriday;
+    private javax.swing.JCheckBox cbMonday;
+    private javax.swing.JCheckBox cbSaterday;
+    private javax.swing.JCheckBox cbSunday;
+    private javax.swing.JCheckBox cbThursday;
+    private javax.swing.JCheckBox cbTuesday;
+    private javax.swing.JCheckBox cbWednesday;
     private javax.swing.JLayeredPane checkInCalender;
     private javax.swing.JLayeredPane checkOutCalender;
     private javax.swing.JLabel checkOutdate;
     private javax.swing.JLabel checkindate;
-    private javax.swing.JComboBox<String> cmbHallID;
+    private javax.swing.JLabel checkindate1;
+    private javax.swing.JComboBox<String> cmbBookTypeCust;
+    private javax.swing.JComboBox<String> cmbHtype;
+    private javax.swing.JComboBox<String> cmbNumberOfDay;
     private com.abc.view.componont.GradientBG gradientBG2;
+    private javax.swing.JTable halltableCustomer;
     private javax.swing.JLayeredPane jCalanderPane;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JLayeredPane jLayeredPane2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private com.abc.view.swing_componont.KButton kButton1;
-    private com.abc.view.swing_componont.KButton kButton2;
-    private javax.swing.JRadioButton rbAC;
-    private javax.swing.JRadioButton rbNonAC;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lbHalltype;
+    private javax.swing.JTextField txtAc;
+    private javax.swing.JTextField txtCap;
     private javax.swing.JLabel txtCheckInDate;
     private javax.swing.JLabel txtCheckOutDate;
+    private javax.swing.JTextField txtEmailCust;
+    private javax.swing.JTextField txtHallId;
+    private javax.swing.JTextField txtNameCust;
+    private javax.swing.JTextField txtNicCust;
+    private javax.swing.JTextField txtPrice;
+    private javax.swing.JTextField txtTeleCust;
     // End of variables declaration//GEN-END:variables
 }
